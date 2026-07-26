@@ -12,14 +12,17 @@ defineProps({
 </script>
 
 <template>
-  <div class="paper max-w-3xl mx-auto">
+  <div class="paper print-area">
     <!-- Cover -->
     <div class="p-12 pb-16 border-b border-ink-100">
       <span class="brand-fold w-9 h-9 mb-5"></span>
       <h1 class="text-4xl font-display font-extrabold text-teal-700 leading-tight uppercase">
         {{ projectTitle }}
       </h1>
-      <p v-if="projectSubtitle" class="text-lg font-semibold text-ink-600 uppercase tracking-wide mt-3">
+      <p
+        v-if="projectSubtitle"
+        class="text-lg font-semibold text-ink-600 uppercase tracking-wide mt-3"
+      >
         {{ projectSubtitle }}
       </p>
       <p class="text-sm text-ink-400 mt-2">{{ proposalDate }}</p>
@@ -40,19 +43,33 @@ defineProps({
     <div class="p-12 pt-10">
       <h2 class="text-xs font-semibold text-ink-400 uppercase tracking-wide mb-6">Milestones</h2>
 
-      <div v-for="(stage, sIndex) in stages" :key="stage.id" :class="sIndex > 0 ? 'mt-10' : ''">
+      <div
+        v-for="(stage, sIndex) in stages"
+        :key="stage.id"
+        :class="sIndex > 0 ? 'mt-10' : ''"
+      >
         <h3 class="text-lg font-display font-bold text-teal-700">{{ stage.title }}</h3>
-        <p v-if="stage.focus" class="text-sm text-ink-600 mt-1 mb-4">
+        <p
+          v-if="stage.focus"
+          class="text-sm text-ink-600 mt-1 mb-4"
+        >
           <span class="font-semibold text-ink">Focus:</span> {{ stage.focus }}
         </p>
 
         <div class="space-y-4">
-          <div v-for="milestone in stage.milestones" :key="milestone.id" class="pl-1">
+          <div
+            v-for="milestone in stage.milestones"
+            :key="milestone.id"
+            class="pl-1"
+          >
             <p class="font-semibold text-ink flex items-start gap-2">
               <span class="text-teal-600 shrink-0">&#10070;</span>
               <span>{{ milestone.name || 'Untitled milestone' }}</span>
             </p>
-            <p v-if="milestone.description" class="text-sm text-ink-600 pl-5 mt-0.5">
+            <p
+              v-if="milestone.description"
+              class="text-sm text-ink-600 pl-5 mt-0.5"
+            >
               {{ milestone.description }}
             </p>
             <p class="text-xs font-mono text-ink-400 pl-5 mt-0.5">

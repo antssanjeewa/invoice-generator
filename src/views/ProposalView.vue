@@ -35,15 +35,10 @@ const handleUpdateMilestone = (stage, milestoneId, milestoneData) => {
 
 <template>
   <div>
-    <!-- Top Action Bar -->
-    <TopActionBar
-      :grand-total="totalHours"
-      total-label="Total Estimate"
-      total-suffix="h"
-      @print="printDocument"
-    />
-
-    <ToolPage title="Proposal" subtitle="Scope new work into stages and milestones">
+    <ToolPage
+      title="Proposal"
+      subtitle="Scope new work into stages and milestones"
+    >
       <template #editor>
         <ProposalEditor
           v-model:project-title="projectTitle"

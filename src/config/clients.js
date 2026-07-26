@@ -5,7 +5,9 @@ export const CLIENTS = [
   {
     id: 'shraddha-media',
     name: 'Shraddha Media Network',
-    address: 'No 369, Rajasinghe Mawatha, Hewagama, Kaduwela',
+    address_line1: 'No 369, Rajasinghe Mawatha',
+    address_line2: 'Hewagama',
+    address_line3: 'Kaduwela',
     defaultRate: 750
   }
 ]
@@ -13,6 +15,8 @@ export const CLIENTS = [
 export const BLANK_CLIENT = {
   id: '',
   name: '',
-  address: '',
+  address_line1: '',
+  address_line2: '',
+  address_line3: '',
   defaultRate: 0
 }

@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { CLIENTS } from '@/config/clients'
 import TaskModal from './TaskModal.vue'
+import ExpandCard from '../common/ExpandCard.vue'
 
 defineProps({
   selectedClient: { type: Object, required: true },
@@ -59,9 +60,7 @@ const handleDeleteTask = (taskId) => {
 </script>
 
 <template>
-  <div class="panel">
-    <h2 class="text-sm font-semibold text-ink mb-4">Invoice details</h2>
-
+  <expand-card title="Invoice details">
     <div class="mb-4">
       <label class="field-label">Billed to</label>
       <select
@@ -72,9 +71,13 @@ const handleDeleteTask = (taskId) => {
             'update:selectedClient',
             CLIENTS.find((c) => c.id === $event.target.value)
           )
-        "
+          "
       >
-        <option v-for="client in CLIENTS" :key="client.id" :value="client.id">
+        <option
+          v-for="client in CLIENTS"
+          :key="client.id"
+          :value="client.id"
+        >
           {{ client.name }}
         </option>
       </select>
@@ -100,18 +103,18 @@ const handleDeleteTask = (taskId) => {
         />
       </div>
     </div>
-  </div>
+  </expand-card>
 
-  <div class="panel">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-sm font-semibold text-ink">Tasks</h2>
+  <expand-card title="Tasks">
+
+    <template #action>
       <button
-        @click="openAddModal"
+        @click.stop="openAddModal"
         class="btn-secondary text-sm px-3 py-1.5"
       >
         + Add Task
       </button>
-    </div>
+    </template>
 
     <!-- Compact Task Table -->
     <div class="overflow-x-auto">
@@ -138,13 +141,16 @@ const handleDeleteTask = (taskId) => {
             :key="task.id"
             class="border-b border-ink-50 hover:bg-ink-50/50 transition-colors"
           >
-            <td class="py-2 px-2 text-ink-800 truncate max-w-[200px]" :title="task.description">
+            <td
+              class="py-2 px-2 text-ink-800 truncate max-w-50"
+              :title="task.description"
+            >
               {{ task.description || '—' }}
             </td>
             <td class="py-2 px-2 text-center font-mono text-ink-600">
               {{ task.hours }}
             </td>
-            <td class="py-2 px-2 text-right font-mono text-ink-800">
+            <td class="py-2 px-2 text-right font-mono text-ink-800 w-32">
               LKR {{ lineTotal(task).toFixed(2) }}
             </td>
             <td class="py-2 px-2 text-center">
@@ -154,7 +160,17 @@ const handleDeleteTask = (taskId) => {
                   class="p-1 text-ink-400 hover:text-teal-600 transition-colors"
                   title="Edit task"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                   </svg>
@@ -165,7 +181,17 @@ const handleDeleteTask = (taskId) => {
                   class="p-1 text-ink-400 hover:text-red-500 transition-colors"
                   title="Delete task"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
                     <polyline points="3 6 5 6 21 6"></polyline>
                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                   </svg>
@@ -177,10 +203,19 @@ const handleDeleteTask = (taskId) => {
       </table>
     </div>
 
-    <div v-if="tasks.length === 0" class="text-center py-8 text-ink-400 text-sm">
+    <div
+      v-if="tasks.length === 0"
+      class="text-center py-8 text-ink-400 text-sm"
+    >
       No tasks added yet. Click "+ Add Task" to get started.
     </div>
-  </div>
+
+
+    <div class="flex justify-between items-center mt-4">
+      <h2 class="text-sm font-semibold text-ink">Grand total</h2>
+      <div class="font-mono text-lg font-bold text-teal-700">LKR {{ grandTotal.toFixed(2) }}</div>
+    </div>
+  </expand-card>
 
   <!-- Task Modal -->
   <TaskModal

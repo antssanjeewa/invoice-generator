@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { CLIENTS } from '@/config/clients'
 import MilestoneModal from './MilestoneModal.vue'
+import ExpandCard from '../common/ExpandCard.vue'
 
 defineProps({
   projectTitle: { type: String, required: true },
@@ -69,9 +70,7 @@ const handleDeleteMilestone = (stage, milestoneId) => {
 </script>
 
 <template>
-  <div class="panel">
-    <h2 class="text-sm font-semibold text-ink mb-4">Proposal details</h2>
-
+  <expand-card title="Proposal details">
     <div class="mb-3">
       <label class="field-label">Title</label>
       <input
@@ -100,7 +99,11 @@ const handleDeleteMilestone = (stage, milestoneId) => {
           :value="preparedFor.id"
           @change="emit('update:preparedFor', CLIENTS.find((c) => c.id === $event.target.value))"
         >
-          <option v-for="client in CLIENTS" :key="client.id" :value="client.id">
+          <option
+            v-for="client in CLIENTS"
+            :key="client.id"
+            :value="client.id"
+          >
             {{ client.name }}
           </option>
         </select>
@@ -125,24 +128,42 @@ const handleDeleteMilestone = (stage, milestoneId) => {
         @input="emit('update:preparedBy', $event.target.value)"
       />
     </div>
-  </div>
+  </expand-card>
 
-  <div v-for="(stage, sIndex) in stages" :key="stage.id" class="panel">
-    <div class="flex items-center justify-between mb-3">
-      <h2 class="text-sm font-semibold text-ink">Stage {{ sIndex + 1 }}</h2>
-      <button v-if="stages.length > 1" class="btn-ghost-danger" @click="emit('remove-stage', stage.id)">
+  <expand-card
+    v-for="(stage, sIndex) in stages"
+    :key="stage.id"
+    class="panel"
+    :title="`Stage ${sIndex + 1}`"
+  >
+    <template #action>
+      <button
+        v-if="stages.length > 1"
+        class="btn-ghost-danger"
+        @click="emit('remove-stage', stage.id)"
+      >
         Remove stage
       </button>
-    </div>
+    </template>
 
     <div class="grid grid-cols-1 gap-3 mb-4">
       <div>
         <label class="field-label">Stage title</label>
-        <input v-model="stage.title" type="text" class="field-input" placeholder="STAGE 1: Module name" />
+        <input
+          v-model="stage.title"
+          type="text"
+          class="field-input"
+          placeholder="STAGE 1: Module name"
+        />
       </div>
       <div>
         <label class="field-label">Focus</label>
-        <textarea v-model="stage.focus" rows="2" class="field-textarea" placeholder="What this stage delivers"></textarea>
+        <textarea
+          v-model="stage.focus"
+          rows="2"
+          class="field-textarea"
+          placeholder="What this stage delivers"
+        ></textarea>
       </div>
     </div>
 
@@ -181,10 +202,16 @@ const handleDeleteMilestone = (stage, milestoneId) => {
             :key="milestone.id"
             class="border-b border-ink-50 hover:bg-ink-50/50 transition-colors"
           >
-            <td class="py-2 px-2 text-ink-800 truncate max-w-[150px]" :title="milestone.name">
+            <td
+              class="py-2 px-2 text-ink-800 truncate max-w-[150px]"
+              :title="milestone.name"
+            >
               {{ milestone.name || '—' }}
             </td>
-            <td class="py-2 px-2 text-ink-600 truncate max-w-[200px]" :title="milestone.description">
+            <td
+              class="py-2 px-2 text-ink-600 truncate max-w-[200px]"
+              :title="milestone.description"
+            >
               {{ milestone.description || '—' }}
             </td>
             <td class="py-2 px-2 text-center font-mono text-ink-600">
@@ -197,7 +224,17 @@ const handleDeleteMilestone = (stage, milestoneId) => {
                   class="p-1 text-ink-400 hover:text-teal-600 transition-colors"
                   title="Edit milestone"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                   </svg>
@@ -208,7 +245,17 @@ const handleDeleteMilestone = (stage, milestoneId) => {
                   class="p-1 text-ink-400 hover:text-red-500 transition-colors"
                   title="Delete milestone"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
                     <polyline points="3 6 5 6 21 6"></polyline>
                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                   </svg>
@@ -220,7 +267,10 @@ const handleDeleteMilestone = (stage, milestoneId) => {
       </table>
     </div>
 
-    <div v-if="stage.milestones.length === 0" class="text-center py-4 text-ink-400 text-sm">
+    <div
+      v-if="stage.milestones.length === 0"
+      class="text-center py-4 text-ink-400 text-sm"
+    >
       No milestones added yet.
     </div>
 
@@ -228,9 +278,12 @@ const handleDeleteMilestone = (stage, milestoneId) => {
       <span class="font-medium text-ink-600">Stage total</span>
       <span class="font-mono font-semibold text-teal-700">{{ stageHours(stage) }}h</span>
     </div>
-  </div>
+  </expand-card>
 
-  <button class="btn-secondary w-full" @click="emit('add-stage')">+ Add stage</button>
+  <button
+    class="btn-secondary w-full"
+    @click="emit('add-stage')"
+  >+ Add stage</button>
 
   <!-- Milestone Modal -->
   <MilestoneModal

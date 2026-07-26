@@ -4,7 +4,9 @@
 
 export const MY_INFO = {
   name: 'A N T S Sanjeewa',
-  address: 'Aluth Gedara, Alakoladeniya, Urubokka.',
+  address_line1: 'Aluth Gedara',
+  address_line2: 'Alakoladeniya',
+  address_line3: 'Urubokka',
   phone: '0712554866',
   email: '',
   bankDetails: {

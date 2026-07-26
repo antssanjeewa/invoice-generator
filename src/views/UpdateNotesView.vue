@@ -43,15 +43,10 @@ const totalPoints = computed(() => {
 
 <template>
   <div>
-    <!-- Top Action Bar -->
-    <TopActionBar
-      :grand-total="totalPoints"
-      total-label="Total Points"
-      total-suffix=""
-      @print="printDocument"
-    />
-
-    <ToolPage title="Update Notes" subtitle="Summarize what shipped, in plain language for the client">
+    <ToolPage
+      title="Update Notes"
+      subtitle="Summarize what shipped, in plain language for the client"
+    >
       <template #editor>
         <UpdateNotesEditor
           v-model:doc-title="docTitle"

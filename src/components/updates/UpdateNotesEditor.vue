@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import PointModal from './PointModal.vue'
+import ExpandCard from '../common/ExpandCard.vue'
 
 defineProps({
   docTitle: { type: String, required: true },
@@ -68,9 +69,7 @@ const handleDeletePoint = (section, pointId) => {
 </script>
 
 <template>
-  <div class="panel">
-    <h2 class="text-sm font-semibold text-ink mb-4">Note details</h2>
-
+  <expand-card title="Note details">
     <div class="mb-3">
       <label class="field-label">Title</label>
       <input
@@ -122,12 +121,25 @@ const handleDeletePoint = (section, pointId) => {
         @input="emit('update:forClient', $event.target.value)"
       />
     </div>
-  </div>
+  </expand-card>
 
-  <div v-for="section in sections" :key="section.id" class="panel">
+  <div
+    v-for="section in sections"
+    :key="section.id"
+    class="panel"
+  >
     <div class="flex items-center justify-between mb-3">
-      <input v-model="section.heading" type="text" class="field-input font-medium" placeholder="Section heading" />
-      <button v-if="sections.length > 1" class="btn-ghost-danger ml-3 shrink-0" @click="emit('remove-section', section.id)">
+      <input
+        v-model="section.heading"
+        type="text"
+        class="field-input font-medium"
+        placeholder="Section heading"
+      />
+      <button
+        v-if="sections.length > 1"
+        class="btn-ghost-danger ml-3 shrink-0"
+        @click="emit('remove-section', section.id)"
+      >
         Remove
       </button>
     </div>
@@ -164,7 +176,10 @@ const handleDeletePoint = (section, pointId) => {
             :key="point.id"
             class="border-b border-ink-50 hover:bg-ink-50/50 transition-colors"
           >
-            <td class="py-2 px-2 text-ink-800 truncate max-w-[250px]" :title="point.text">
+            <td
+              class="py-2 px-2 text-ink-800 truncate max-w-[250px]"
+              :title="point.text"
+            >
               {{ point.text || '—' }}
             </td>
             <td class="py-2 px-2 text-center font-mono text-ink-600">
@@ -177,7 +192,17 @@ const handleDeletePoint = (section, pointId) => {
                   class="p-1 text-ink-400 hover:text-teal-600 transition-colors"
                   title="Edit point"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                   </svg>
@@ -188,7 +213,17 @@ const handleDeletePoint = (section, pointId) => {
                   class="p-1 text-ink-400 hover:text-red-500 transition-colors"
                   title="Delete point"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
                     <polyline points="3 6 5 6 21 6"></polyline>
                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                   </svg>
@@ -200,12 +235,18 @@ const handleDeletePoint = (section, pointId) => {
       </table>
     </div>
 
-    <div v-if="section.points.length === 0" class="text-center py-4 text-ink-400 text-sm">
+    <div
+      v-if="section.points.length === 0"
+      class="text-center py-4 text-ink-400 text-sm"
+    >
       No points added yet.
     </div>
   </div>
 
-  <button class="btn-secondary w-full" @click="emit('add-section')">+ Add section</button>
+  <button
+    class="btn-secondary w-full"
+    @click="emit('add-section')"
+  >+ Add section</button>
 
   <!-- Point Modal -->
   <PointModal

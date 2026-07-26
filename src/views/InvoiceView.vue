@@ -31,15 +31,10 @@ const handleUpdateTask = (taskId, taskData) => {
 
 <template>
   <div>
-    <!-- Top Action Bar -->
-    <TopActionBar
-      :grand-total="grandTotal"
-      total-label="Grand Total"
-      total-suffix=""
-      @print="printDocument"
-    />
-
-    <ToolPage title="Invoice" subtitle="Bill a client for completed work">
+    <ToolPage
+      title="Invoice"
+      subtitle="Bill a client for completed work"
+    >
       <template #editor>
         <InvoiceEditor
           v-model:selected-client="selectedClient"

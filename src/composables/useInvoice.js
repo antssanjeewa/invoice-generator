@@ -13,7 +13,7 @@ export function useInvoice() {
   const selectedClient = ref(CLIENTS[0] || BLANK_CLIENT)
   const invoiceNumber = ref(`INV-${new Date().getFullYear()}-001`)
   const invoiceDate = ref(new Date().toISOString().slice(0, 10))
-  const tasks = ref([newTask(selectedClient.value.defaultRate)])
+  const tasks = ref([])
 
   // When the client changes, prefill new-line rates (existing lines keep
   // whatever the user already typed, so we don't clobber real edits).
