@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+/* Print Styles */
+@media print {
+  /* Hide all UI controls when printing */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Make print area take full page width */
+  .print-area {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Ensure proper page breaks */
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Hide scrollbars in print */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
