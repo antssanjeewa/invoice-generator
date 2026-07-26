@@ -1,66 +1,45 @@
-// Invoice State Management Composable
-// Handles all reactive state for invoice generation
+import { ref, computed, watch } from 'vue'
+import { CLIENTS, BLANK_CLIENT } from '@/config/clients'
 
-import { ref, computed } from 'vue'
-import { CLIENTS } from '../config/clients'
+let nextId = 1
+const newTask = (rate = 0) => ({
+  id: nextId++,
+  description: '',
+  hours: 0,
+  rate
+})
 
 export function useInvoice() {
-  // Selected client (defaults to first client)
-  const selectedClient = ref(CLIENTS[0])
+  const selectedClient = ref(CLIENTS[0] || BLANK_CLIENT)
+  const invoiceNumber = ref(`INV-${new Date().getFullYear()}-001`)
+  const invoiceDate = ref(new Date().toISOString().slice(0, 10))
+  const tasks = ref([newTask(selectedClient.value.defaultRate)])
 
-  // Auto-generated invoice number format: INV-YYYY-XXXX
-  const generateInvoiceNumber = () => {
-    const year = new Date().getFullYear()
-    const random = Math.floor(Math.random() * 9000) + 1000
-    return `INV-${year}-${random}`
-  }
-
-  const invoiceNumber = ref(generateInvoiceNumber())
-
-  // Auto-filled with today's date YYYY-MM-DD
-  const getTodayDate = () => {
-    const today = new Date()
-    return today.toISOString().split('T')[0]
-  }
-
-  const invoiceDate = ref(getTodayDate())
-
-  // Tasks array with default sample tasks
-  const tasks = ref([
-    {
-      description: 'Web Development Services',
-      hours: 8,
-      rate: 750,
-    },
-    {
-      description: 'UI/UX Design',
-      hours: 5,
-      rate: 750,
-    },
-  ])
-
-  // Add a new task
-  const addTask = () => {
-    tasks.value.push({
-      description: '',
-      hours: 0,
-      rate: selectedClient.value.defaultRate,
+  // When the client changes, prefill new-line rates (existing lines keep
+  // whatever the user already typed, so we don't clobber real edits).
+  watch(selectedClient, (client) => {
+    invoiceNumber.value = invoiceNumber.value
+    tasks.value.forEach((task) => {
+      if (!task.description && task.hours === 0) {
+        task.rate = client.defaultRate
+      }
     })
-  }
-
-  // Remove a task by index
-  const removeTask = (index) => {
-    if (tasks.value.length > 1) {
-      tasks.value.splice(index, 1)
-    }
-  }
-
-  // Computed: Grand Total (sum of hours * rate for all tasks)
-  const grandTotal = computed(() => {
-    return tasks.value.reduce((total, task) => {
-      return total + (task.hours * task.rate)
-    }, 0)
   })
+
+  const addTask = () => {
+    tasks.value.push(newTask(selectedClient.value.defaultRate))
+  }
+
+  const removeTask = (id) => {
+    if (tasks.value.length <= 1) return
+    tasks.value = tasks.value.filter((t) => t.id !== id)
+  }
+
+  const lineTotal = (task) => (Number(task.hours) || 0) * (Number(task.rate) || 0)
+
+  const grandTotal = computed(() =>
+    tasks.value.reduce((sum, task) => sum + lineTotal(task), 0)
+  )
 
   return {
     selectedClient,
@@ -69,6 +48,7 @@ export function useInvoice() {
     tasks,
     addTask,
     removeTask,
-    grandTotal,
+    lineTotal,
+    grandTotal
   }
 }
