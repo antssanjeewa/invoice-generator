@@ -34,13 +34,32 @@ export function useUpdateNotes() {
     sections.value = sections.value.filter((s) => s.id !== id)
   }
 
-  const addPoint = (section) => {
-    section.points.push(newPoint())
+  const addPoint = (section, pointData = null) => {
+    if (pointData) {
+      section.points.push({
+        id: nextPointId++,
+        text: pointData.text,
+        subPoints: pointData.subPoints || []
+      })
+    } else {
+      section.points.push(newPoint())
+    }
   }
 
   const removePoint = (section, pointId) => {
     if (section.points.length <= 1) return
     section.points = section.points.filter((p) => p.id !== pointId)
+  }
+
+  const updatePoint = (section, pointId, pointData) => {
+    const pointIndex = section.points.findIndex((p) => p.id === pointId)
+    if (pointIndex !== -1) {
+      section.points[pointIndex] = {
+        ...section.points[pointIndex],
+        text: pointData.text,
+        subPoints: pointData.subPoints || []
+      }
+    }
   }
 
   const addSubPoint = (point) => {
@@ -62,6 +81,7 @@ export function useUpdateNotes() {
     removeSection,
     addPoint,
     removePoint,
+    updatePoint,
     addSubPoint,
     removeSubPoint
   }

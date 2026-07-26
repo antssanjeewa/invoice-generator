@@ -26,13 +26,34 @@ export function useInvoice() {
     })
   })
 
-  const addTask = () => {
-    tasks.value.push(newTask(selectedClient.value.defaultRate))
+  const addTask = (taskData = null) => {
+    if (taskData) {
+      tasks.value.push({
+        id: nextId++,
+        description: taskData.description,
+        hours: taskData.hours,
+        rate: taskData.rate
+      })
+    } else {
+      tasks.value.push(newTask(selectedClient.value.defaultRate))
+    }
   }
 
   const removeTask = (id) => {
     if (tasks.value.length <= 1) return
     tasks.value = tasks.value.filter((t) => t.id !== id)
+  }
+
+  const updateTask = (id, taskData) => {
+    const taskIndex = tasks.value.findIndex((t) => t.id === id)
+    if (taskIndex !== -1) {
+      tasks.value[taskIndex] = {
+        ...tasks.value[taskIndex],
+        description: taskData.description,
+        hours: taskData.hours,
+        rate: taskData.rate
+      }
+    }
   }
 
   const lineTotal = (task) => (Number(task.hours) || 0) * (Number(task.rate) || 0)
@@ -48,6 +69,7 @@ export function useInvoice() {
     tasks,
     addTask,
     removeTask,
+    updateTask,
     lineTotal,
     grandTotal
   }

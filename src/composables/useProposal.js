@@ -37,13 +37,34 @@ export function useProposal() {
     stages.value = stages.value.filter((s) => s.id !== id)
   }
 
-  const addMilestone = (stage) => {
-    stage.milestones.push(newMilestone())
+  const addMilestone = (stage, milestoneData = null) => {
+    if (milestoneData) {
+      stage.milestones.push({
+        id: nextMilestoneId++,
+        name: milestoneData.name,
+        description: milestoneData.description,
+        hours: milestoneData.hours
+      })
+    } else {
+      stage.milestones.push(newMilestone())
+    }
   }
 
   const removeMilestone = (stage, milestoneId) => {
     if (stage.milestones.length <= 1) return
     stage.milestones = stage.milestones.filter((m) => m.id !== milestoneId)
+  }
+
+  const updateMilestone = (stage, milestoneId, milestoneData) => {
+    const milestoneIndex = stage.milestones.findIndex((m) => m.id === milestoneId)
+    if (milestoneIndex !== -1) {
+      stage.milestones[milestoneIndex] = {
+        ...stage.milestones[milestoneIndex],
+        name: milestoneData.name,
+        description: milestoneData.description,
+        hours: milestoneData.hours
+      }
+    }
   }
 
   const stageHours = (stage) =>
@@ -64,6 +85,7 @@ export function useProposal() {
     removeStage,
     addMilestone,
     removeMilestone,
+    updateMilestone,
     stageHours,
     totalHours
   }
