@@ -9,6 +9,14 @@ export const CLIENTS = [
     address_line2: 'Hewagama',
     address_line3: 'Kaduwela',
     defaultRate: 750
+  },
+  {
+    id: 'school-media',
+    name: 'Mahawewnawa Buddhist Collage',
+    address_line1: 'No 358/A',
+    address_line2: 'Keragala Road',
+    address_line3: 'Demalagama',
+    defaultRate: 900
   }
 ]
 

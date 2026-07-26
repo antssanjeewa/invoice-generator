@@ -119,6 +119,7 @@
 		position: absolute;
 		inset: 0;
 		width: 100%;
+		min-height: 297mm;
 	}
 	.print-area,
 	.print-area * {
